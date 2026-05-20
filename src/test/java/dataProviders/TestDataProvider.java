@@ -8,7 +8,7 @@ public class TestDataProvider {
     @DataProvider(name = "testData")
     public Object[][] getData() throws Exception{
         String spreadsheetId = "13e0DpIj2RIFNsV3gu-BmnmnEWai77fMbs0j1yUI0NSo";
-        String range = "Hoja 1!A1:C11";
+        String range = "Hoja 1!A1:C6";
 
         try {
             return GoogleSheetsUtils.getSheetData(spreadsheetId, range);
