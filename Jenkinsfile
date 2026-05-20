@@ -1,5 +1,6 @@
 pipeline {
-    agent any tools {
+    agent any
+    tools {
         maven 'Maven3'
         jdk 'JDK25'
     }
@@ -17,7 +18,8 @@ pipeline {
                                 variable: 'GOOGLE_CREDS'
                         )
                 ]) {
-                bat 'mvn test -Dheadless=false'
+                    bat 'mvn test -Dheadless=false'
+                }
             }
         }
     }
