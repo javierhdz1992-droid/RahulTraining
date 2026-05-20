@@ -8,18 +8,34 @@ import com.google.auth.http.HttpCredentialsAdapter;
 import com.google.auth.oauth2.GoogleCredentials;
 
 import java.io.FileInputStream;
+import java.util.Collections;
 import java.util.List;
 
 
 public class GoogleSheetsUtils {
 
     public static final String APPLICATION_NAME = "Selenium Framework";
+    private static final String SPREADSHEETS_SCOPE =
+            "https://www.googleapis.com/auth/spreadsheets.readonly";
 
     public static Object[][] getSheetData(String spreadsheetId, String range) throws Exception{
         // Cargar credenciales JSON de la cuenta de servicio
-        GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream("src/test/resources/credentials.json"));
+        String credentialsPath = System.getenv("GOOGLE_CREDS");
 
-        credentials = credentials.createScoped(List.of("https://www.googleapis.com/auth/spreadsheets.readonly"));
+        if (credentialsPath == null || credentialsPath.isEmpty()) {
+
+            throw new RuntimeException(
+                    "GOOGLE_CREDS environment variable is not set."
+            );
+        }
+
+        GoogleCredentials credentials;
+        try (FileInputStream serviceAccount =
+                     new FileInputStream(credentialsPath)) {
+                    credentials = GoogleCredentials
+                    .fromStream(serviceAccount)
+                    .createScoped(Collections.singleton(SPREADSHEETS_SCOPE));
+        }
 
         Sheets service = new Sheets.Builder(
                 GoogleNetHttpTransport.newTrustedTransport(),

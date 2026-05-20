@@ -1,25 +1,26 @@
 pipeline {
-    agent any
-
-    tools {
+    agent any tools {
         maven 'Maven3'
         jdk 'JDK25'
     }
-
     stages {
         stage('Clean') {
             steps {
                 bat 'mvn clean'
             }
         }
-
         stage('Run Tests') {
             steps {
+                withCredentials([
+                        file(
+                                credentialsId: 'google-sheets-creds',
+                                variable: 'GOOGLE_CREDS'
+                        )
+                ]) {
                 bat 'mvn test -Dheadless=false'
             }
         }
     }
-
     post {
         always {
             junit 'target/surefire-reports/*.xml'
