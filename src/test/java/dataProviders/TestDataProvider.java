@@ -13,7 +13,7 @@ public class TestDataProvider {
         try {
             return GoogleSheetsUtils.getSheetData(spreadsheetId, range);
         } catch (Exception e) {
-            System.err.println("[WARN] No se pudo leer Google Sheets. Usando datos por defecto. Error: " + e.getMessage());
+            System.err.println("No se pudo leer Google Sheets. Usando datos por defecto. Error: " + e.getMessage());
             return new Object[][]{
                     {"TestingEmail@gmail.com", "Admin2026*", "ZARA COAT 3"}
             };
